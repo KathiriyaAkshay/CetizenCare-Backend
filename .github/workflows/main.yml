@@ -1,0 +1,22 @@
+name: Build and Deploy
+on:
+ push:
+  branches:
+  - stagging # Change this to your main branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: multiple command
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.PUBLIC_IP }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd /home/ubuntu/Ceetizen-Care
+            git pull origin stagging
+            docker compose up -d --build
+            
